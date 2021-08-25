@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import './PokeFetch.css';
+
 
 
 class PokeFetch extends Component {
@@ -9,6 +10,7 @@ class PokeFetch extends Component {
       pokeInfo: '',
       pokeSprite: '',
       pokeName: '',
+      count: 10,
     }
   }
 
@@ -30,17 +32,60 @@ class PokeFetch extends Component {
   }
 
   render() {
-    return (
-      <div className={'wrapper'}>
-        <button className={'start'} onClick={() => this.fetchPokemon()}>Start!</button>
-        <h1 className={'timer'} >Timer Display</h1>
-        <div className={'pokeWrap'}>
-          <img className={'pokeImg'} src={this.state.pokeSprite} />
-          <h1 className={'pokeName'}>{this.state.pokeName}</h1>
+    const { count } = this.state
+    console.log(count)
+    if (count === 0) {
+      //Reveal Pokemon
+      return (
+        <div className={'wrapper'}>
+          <button className={'start'} onClick={() => {
+            this.fetchPokemon();
+            this.countTimer();
+          }}>Start!</button>
+
+          <h1 className={'timer'} >Countdown {count}</h1>
+          <div className={'pokeWrap'}>
+            <img className={'pokeImg'} id={'revealPoke'} src={this.state.pokeSprite} />
+            <h1 className={'pokeName'}>{this.state.pokeName}</h1>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      //Hide Pokemon
+      return (
+        <div className={'wrapper'}>
+          <button className={'start'} onClick={() => {
+            this.fetchPokemon();
+            this.countTimer();
+          }}>Start!</button>
+
+          <h1 className={'timer'} >Countdown {count}</h1>
+          <div className={'pokeWrap'}>
+            <img className={'pokeImg'} id={'hidePoke'} src={this.state.pokeSprite} />
+          </div>
+        </div>
+      )
+    }
   }
+
+  countTimer() {
+    this.myInterval = setInterval(() => {
+      this.setState(prevState => ({
+        count: prevState.count - 1
+      }))
+      if (this.state.count === 0) {
+        clearInterval(this.myInterval) //this stops at 0, but doesn't reset to 10
+      } if (this.state.count < 0) {
+        this.setState({ count: 10 }, () => {
+          console.log("updated count" + this.state.count)
+        })
+      }
+
+    }, 1000)
+  }
+
 }
 
 export default PokeFetch;
+
+

@@ -32,6 +32,13 @@
   width: 500px;
 }
 
+#hidePoke {
+  filter: brightness(5%);
+}
+
+#revealPoke {
+  filter: brightness(75%);
+}
 .pokeName {
   font-family: 'Press Start 2P', cursive;
   text-transform: uppercase;
